@@ -6,7 +6,7 @@ import(
     "net"
     "sync"
     //import the generated protobuf code
-    pb "./proto/consignment"
+    pb "github.com/jojojolin/learn_microservices/proto/consignment"
     "google.golang.org/grpc"
     "google.golang.org/grpc/reflection"
 )
