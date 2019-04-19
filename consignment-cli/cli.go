@@ -5,6 +5,7 @@ import(
     "io/ioutil"
     "log"
     "os"
+    "fmt"
     
     "context"
     
@@ -23,7 +24,11 @@ func parseFile(file string) (*pb.Consignment, error){
     if err!= nil{
         return nil, err
     }
-    json.Unmarshal(data, &consignment)
+    //convert json object to consignment struct
+    er :=json.Unmarshal(data, &consignment)
+    if er!=nil{
+        fmt.Println("error while unmarshaling json:%v",er)
+    }
     return consignment, err
 }
 
@@ -33,6 +38,7 @@ func main(){
     if err != nil{
         log.Fatalf("Did not connect: %v",err)
     }
+    //always ensure that conn closes even if error occurs and program  exit early
     defer conn.Close()
     client := pb.NewShippingServiceClient(conn)
     
@@ -46,6 +52,9 @@ func main(){
     
     if err!= nil {
         log.Fatalf("Could not parse file: %v", err)
+    }
+    if consignment == nil{
+        fmt.Println("consignment is a null pointer")
     }
     
     r, err := client.CreateConsignment(context.Background(), consignment)
