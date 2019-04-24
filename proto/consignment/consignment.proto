@@ -5,6 +5,9 @@ package consignment;
 // Define my service
 service ShippingService {
     rpc CreateConsignment(Consignment) returns (Response){}
+    
+    //Created a new method
+    rpc GetConsignments(GetRequest) returns(Response){}
 }
 
 //Message types, essentially data structure
@@ -23,7 +26,11 @@ message Container {
     string user_id = 4;
 }
 
+message GetRequest{}
+
 message Response {
     bool created = 1;
     Consignment consignment = 2;
+    // pluralised consignment like array
+    repeated Consignment consignments = 3;
 }

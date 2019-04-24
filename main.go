@@ -17,12 +17,23 @@ const (
 
 type repository interface {
     Create(*pb.Consignment) (*pb.Consignment, error)
+    GetAll() []*pb.Consignment
 }
 
 //Repository -fake
 type Repository struct {
     mu sync.RWMutex
     consignments []*pb.Consignment
+}
+
+func (repo *Repository)GetAll() []*pb.Consignment{
+    return repo.consignments
+}
+
+func (s *service) GetConsignments(ctx context.Context, req *pb.GetRequest)(*pb.Response, error){
+    consignments := s.repo.GetAll()
+    return &pb.Response{Consignments: consignments},nil
+
 }
 
 //Create a new consignment
